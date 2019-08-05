@@ -6,16 +6,17 @@ import { connect } from 'react-redux';
 // import VideoEmbed from './VideoEmbed';
 // const { Meta } = Card;
 
-var selectedAgentsList = [];
+// var selectedAgentsList = [];
 
-function agentSelected(item) {
-  selectedAgentsList.push(item);
-  console.log(selectedAgentsList);
-  selectedAgents();
-}
+// function agentSelected(item) {
+//   selectedAgentsList.push(item);
+//   console.log(selectedAgentsList);
+//   selectedAgents();
+// }
 
-function selectedAgents() {
-  var selectedItems = selectedAgentsList.map(function(item, index) {
+function selectedAgents(items) {
+  console.log(items);
+  var selectedItems = items.map(function(item, index) {
     return (
       <div key={index} >{item}</div>
     );
@@ -23,33 +24,26 @@ function selectedAgents() {
   return selectedItems;
 }
 
-function showList(items) {
-  var listItems = items.map(function(item, index) {
-    return (
-      <div key={index} onClick={() => agentSelected(item)}>{item}</div>
-    );
-  });
-  return listItems;
-}
+// function showList(items) {
+//   var listItems = items.map(function(item, index) {
+//     return (
+//       <div key={index} onClick={() => agentSelected(item)}>{item}</div>
+//     );
+//   });
+//   return listItems;
+// }
 
 const SelectedAgentsList = props => {
-  var listItems = null;
   var selectedItems = null;
-
-  listItems = showList(props.items);
-  selectedItems = selectedAgents();
-
+  selectedItems = selectedAgents(props.items);
+  console.log(props);
   return (
-    <div>
-      <div className="inline-list">
-        <div>{listItems}</div>
-      </div>
-      <div className="inline-list">
+    <div className="col-md-6 offset-md-3 col-xs-12">
+      <div>
         <div>{selectedItems}</div>
       </div>
     </div>
   );
-  
 };
 
 export default connect()(SelectedAgentsList);

@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 function agentSelected(item, props) {
   // selectedAgentsList.push(item);
   // console.log(selectedAgentsList);
+  console.log(item);
   props.parentCallback(item);
 }
 

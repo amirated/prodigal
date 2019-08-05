@@ -39,6 +39,7 @@ class Part1 extends React.Component {
       max_duration: null,
       filter: {},
       filtered_list: null,
+      selected_agents: []
     };
     // this.getFilteredCalls.bind(this);
   }
@@ -54,10 +55,17 @@ class Part1 extends React.Component {
 
   }
 
-  agentListCallback(childData) {
-    console.log("agentListCallback");
-    // this.setState({selected_agents: childData})
-  }
+  agentListCallback = (childData) => {
+    let temp = this.state.selected_agents;
+    temp.push(childData);
+    this.setState({selected_agents: temp})
+    console.log(this.state.selected_agents);
+  };
+
+  selectedListCallback = (childData) => {
+    console.log("selectedListCallback");
+    this.setState({selected_agents: childData})
+  };
 
   getFilteredCalls() {
     const filter = {"info": {
@@ -114,6 +122,7 @@ class Part1 extends React.Component {
   }
 
   listOfAgents() {
+    console.log("listOfAgents");
     fetch("https://damp-garden-93707.herokuapp.com/getlistofagents")
       .then(res => res.json())
       .then(
@@ -158,13 +167,13 @@ class Part1 extends React.Component {
           </div>
         </div>
           
-          <input onChange={this.filterValue} />
-          <Button type="primary" onClick={this.getFilteredCalls.bind(this)}>
-            getFilteredCalls
-          </Button>
-          <AgentList items={this.state.agents} parentCallback={this.agentListCallback}/>
-
-        </div>
+        <input onChange={this.filterValue} />
+        <Button type="primary" onClick={this.getFilteredCalls.bind(this)}>
+          getFilteredCalls
+        </Button>
+        <AgentList items={this.state.agents} parentCallback={this.agentListCallback}/>
+        <SelectedAgentsList items={this.state.selected_agents} parentCallback={this.selectedListCallback} />
+      </div>
     );
   }
 }
