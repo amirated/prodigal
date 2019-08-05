@@ -6,14 +6,19 @@ import { connect } from 'react-redux';
 // import VideoEmbed from './VideoEmbed';
 // const { Meta } = Card;
 
-function agentSelected(item) {
-  console.log(item);
+// var selectedAgentsList = [];
+
+function agentSelected(item, props) {
+  // selectedAgentsList.push(item);
+  // console.log(selectedAgentsList);
+  props.parentCallback(item);
 }
 
-function showList(items) {
-  var listItems = items.map(function(item, index) {
+
+function showList(props) {
+  var listItems = props.items.map(function(item, index) {
     return (
-      <div key={index} onClick={agentSelected(item)}>{item}</div>
+      <div key={index} onClick={() => agentSelected(item, props)}>{item}</div>
     );
   });
   return listItems;
@@ -21,11 +26,14 @@ function showList(items) {
 
 const AgentList = props => {
   var listItems = null;
-  
-  listItems = showList(props.items);
+
+  listItems = showList(props);
+
   return (
     <div>
-      <div>{listItems}</div>
+      <div className="inline-list">
+        <div>{listItems}</div>
+      </div>
     </div>
   );
   

@@ -4,6 +4,9 @@ import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
 import PageBodyList from './PageBodyList';
+import AgentList from './AgentList';
+import SelectedAgentsList from './SelectedAgentsList';
+
 // import { Card } from 'antd';
 import { Button } from 'antd';
 
@@ -49,6 +52,11 @@ class Part1 extends React.Component {
 
   filterValue() {
 
+  }
+
+  agentListCallback(childData) {
+    console.log("agentListCallback");
+    // this.setState({selected_agents: childData})
   }
 
   getFilteredCalls() {
@@ -133,6 +141,11 @@ class Part1 extends React.Component {
     this.props.onUnload();
   }
 // <AgentList items={this.state.agents} />
+// <PageBodyList page_name="agent_list" items={this.state.agents}/>
+
+// <SelectedAgentsList items={this.state.selected_agents} />
+
+
   render() {
     return (
       <div className="container page" style={{ marginTop: "5rem"}}>
@@ -149,7 +162,8 @@ class Part1 extends React.Component {
           <Button type="primary" onClick={this.getFilteredCalls.bind(this)}>
             getFilteredCalls
           </Button>
-          <PageBodyList page_name="agent_list" items={this.state.agents}/>
+          <AgentList items={this.state.agents} parentCallback={this.agentListCallback}/>
+
         </div>
     );
   }
