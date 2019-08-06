@@ -1,18 +1,10 @@
 import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
-// import { CHANGE_TAB } from '../constants/actionTypes';
-// import { Card, Icon, Avatar } from 'antd';
-// import VideoEmbed from './VideoEmbed';
-// const { Meta } = Card;
-
-// var selectedAgentsList = [];
 
 function agentSelected(item, props) {
-  // selectedAgentsList.push(item);
-  // console.log(selectedAgentsList);
   console.log(item);
-  props.parentCallback(item);
+  // props.parentCallback(item);
 }
 
 
@@ -25,7 +17,7 @@ function showList(props) {
   return listItems;
 }
 
-const AgentList = props => {
+const CallList = props => {
   var listItems = null;
 
   listItems = showList(props);
@@ -40,4 +32,4 @@ const AgentList = props => {
   
 };
 
-export default connect()(AgentList);
+export default connect()(CallList);
