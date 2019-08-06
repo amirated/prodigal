@@ -27,12 +27,6 @@ class Part2 extends React.Component {
       label_list: [],
       call_list: []
     };
-    // this.changeEmail = ev => this.props.onChangeEmail(ev.target.value);
-    // this.changePassword = ev => this.props.onChangePassword(ev.target.value);
-    // this.submitForm = (email, password) => ev => {
-    //   ev.preventDefault();
-    //   this.props.onSubmit(email, password);
-    // };
   }
 
   componentWillMount() {
@@ -68,9 +62,6 @@ class Part2 extends React.Component {
           });
           console.log(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           this.setState({
             isLoaded: true,
@@ -98,9 +89,6 @@ class Part2 extends React.Component {
           });
           console.log(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           this.setState({
             isLoaded: true,
@@ -111,15 +99,6 @@ class Part2 extends React.Component {
   }
 
   applyLabels() {
-    // const filter = {"info": {
-    //   "filter_agent_list": [
-    //     "Janet Nelson",
-    //     "Wayne Brown"
-    //   ],
-    //   "filter_time_range": [0,10]
-    //   }
-    // }
-
     const data = {
       "operation": {
         "callList": [0,1,2],

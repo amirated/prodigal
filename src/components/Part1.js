@@ -134,9 +134,6 @@ class Part1 extends React.Component {
           console.log(result.data);
           console.log(this.state.items);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           this.setState({
             isLoaded: true,
