@@ -5,6 +5,7 @@ import agent from '../agent';
 import { connect } from 'react-redux';
 import PageBodyList from './PageBodyList';
 import AgentList from './AgentList';
+import TableView from './TableView';
 import SelectedAgentsList from './SelectedAgentsList';
 
 // import { Card } from 'antd';
@@ -47,6 +48,7 @@ class Part1 extends React.Component {
   componentDidMount() {
     this.listOfAgents();
     this.getDurationRange();
+    this.defineAgentTableColumns();
     // this.getFilteredCalls();
     // dispatch({ type: AGENT_LIST_FETCHED })
   }
@@ -129,7 +131,9 @@ class Part1 extends React.Component {
         (result) => {
           this.setState({
             isLoaded: true,
-            agents: result.data.listofagents
+            agent_table_data: result.data.listofagents.map(agent => {
+              return {agent_name: agent}
+            })
           });
           console.log(result.data);
           console.log(this.state.items);
@@ -143,13 +147,54 @@ class Part1 extends React.Component {
       )
   }
 
+  defineAgentTableColumns() {
+    this.setState({
+      agent_table_columns: [
+        {
+          title: 'Name',
+          dataIndex: 'agent_name',
+          filters: [
+            {
+              text: 'Joe',
+              value: 'Joe',
+            },
+            {
+              text: 'Jim',
+              value: 'Jim',
+            },
+            {
+              text: 'Submenu',
+              value: 'Submenu',
+              children: [
+                {
+                  text: 'Green',
+                  value: 'Green',
+                },
+                {
+                  text: 'Black',
+                  value: 'Black',
+                },
+              ],
+            },
+          ],
+          // specify the condition of filtering result
+          // here is that finding the name started with `value`
+          onFilter: (value, record) => record.agent_name.indexOf(value) === 0,
+          sorter: (a, b) => b.agent_name.length - a.agent_name.length,
+          sortDirections: ['descend'],
+        }
+      ]
+    })
+  }
+
   componentWillUnmount() {
     this.props.onUnload();
   }
 // <AgentList items={this.state.agents} />
 // <PageBodyList page_name="agent_list" items={this.state.agents}/>
 
-// <SelectedAgentsList items={this.state.selected_agents} />
+// <AgentList items={this.state.agents} parentCallback={this.agentListCallback}/>
+// <SelectedAgentsList items={this.state.selected_agents} parentCallback={this.selectedListCallback} />
 
 
   render() {
@@ -168,8 +213,7 @@ class Part1 extends React.Component {
         <Button type="primary" onClick={this.getFilteredCalls.bind(this)}>
           getFilteredCalls
         </Button>
-        <AgentList items={this.state.agents} parentCallback={this.agentListCallback}/>
-        <SelectedAgentsList items={this.state.selected_agents} parentCallback={this.selectedListCallback} />
+        <TableView columns={this.state.agent_table_columns} data={this.state.agent_table_data}/>
       </div>
     );
   }
