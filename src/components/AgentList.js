@@ -1,43 +1,54 @@
 import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
-// import { CHANGE_TAB } from '../constants/actionTypes';
-// import { Card, Icon, Avatar } from 'antd';
-// import VideoEmbed from './VideoEmbed';
-// const { Meta } = Card;
+import { Select } from 'antd';
 
-// var selectedAgentsList = [];
+const { Option } = Select;
 
-function agentSelected(item, props) {
-  // selectedAgentsList.push(item);
-  // console.log(selectedAgentsList);
-  console.log(item);
-  props.parentCallback(item);
-}
+class AgentList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      selectedAgents: []
+    }
+  } 
 
+  componentDidMount() {
+    // this.setMarks();
+    // this.getFilteredCalls();
+    // dispatch({ type: AGENT_LIST_FETCHED })
+  }
 
-function showList(props) {
-  var listItems = props.items.map(function(item, index) {
-    return (
-      <div key={index} onClick={() => agentSelected(item, props)}>{item}</div>
-    );
-  });
-  return listItems;
-}
+  agentSelection = (value) => {
+    console.log(value);
+    console.log(typeof value);
+    // var arr = this.state.selectedAgents;
+    // console.log(arr);
+    // arr.push(value)
+    this.setState({
+      selectedAgent: value
+    })
+    this.props.parentCallback(value)
+  }
 
-const AgentList = props => {
-  var listItems = null;
-
-  listItems = showList(props);
-
-  return (
-    <div>
-      <div className="inline-list">
-        <div>{listItems}</div>
+  render() {
+    return(
+      <div> Select Agents: &nbsp;
+        <Select
+          mode="multiple"
+          style={{ width: '100%' }}
+          placeholder="Select Agents"
+          defaultValue={[]}
+          onChange={this.agentSelection} >
+            {this.props.agents && (this.props.agents.map(agent => {
+              return <Option key={agent}>{agent}</Option>
+            }))}
+        </Select>
       </div>
-    </div>
-  );
-  
-};
+    )
+  }
+}
 
 export default connect()(AgentList);

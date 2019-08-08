@@ -37,12 +37,14 @@ class Part1 extends React.Component {
     this.state = {
       error: null,
       isLoaded: false,
+      selected_agents: [],
+      filter_time_range: [0,10]
       // agents: [],
       // min_duration: null,
       // max_duration: null,
       // filter: {},
       // filtered_list: null,
-      // selected_agents: []
+      
     };
     // this.getFilteredCalls.bind(this);
   }
@@ -62,9 +64,9 @@ class Part1 extends React.Component {
 
 
   agentListCallback = (childData) => {
-    let temp = this.state.selected_agents;
-    temp.push(childData);
-    this.setState({selected_agents: temp})
+    // let temp = this.state.selected_agents;
+    // temp.push(childData);
+    this.setState({selected_agents: childData})
     console.log(this.state.selected_agents);
   };
 
@@ -79,10 +81,7 @@ class Part1 extends React.Component {
 
   getFilteredCalls() {
     const filter = {"info": {
-        "filter_agent_list": [
-          "Janet Nelson",
-          "Wayne Brown"
-        ],
+        "filter_agent_list": this.state.selected_agents,
         "filter_time_range": this.state.filter_time_range
         }
       }
@@ -119,8 +118,6 @@ class Part1 extends React.Component {
             min_duration: result.data.minimum,
             max_duration: result.data.maximum,
           });
-          console.log(result.data);
-          console.log(this.state.items);
         },
         (error) => {
           this.setState({
@@ -139,12 +136,13 @@ class Part1 extends React.Component {
         (result) => {
           this.setState({
             isLoaded: true,
+            agents: result.data.listofagents,
             agent_table_data: result.data.listofagents.map(agent => {
               return {agent_name: agent}
             })
           });
           console.log(result.data);
-          console.log(this.state.items);
+          console.log(this.state.agents);
         },
         (error) => {
           this.setState({
@@ -250,10 +248,14 @@ class Part1 extends React.Component {
           </div>
         </div>
         <RangeSelector minimumDuration={this.state.min_duration} maximumDuration={this.state.max_duration} parentCallback={this.rangeSelectorCallback}/>
+        <AgentList agents={this.state.agents} parentCallback={this.agentListCallback}/>
         <br/>
+
         <Button type="primary" onClick={this.getFilteredCalls.bind(this)}>
           getFilteredCalls
         </Button>
+        <br/>
+
         <TableView columns={this.state.agent_table_columns} data={this.state.agent_table_data}/>
       </div>
     );
