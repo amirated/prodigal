@@ -158,7 +158,7 @@ class Part1 extends React.Component {
       agent_table_columns: [
         {
           title: 'Name',
-          dataIndex: 'agent_name',
+          dataIndex: 'agent_id',
           filters: [
             {
               text: 'Joe',
@@ -185,8 +185,8 @@ class Part1 extends React.Component {
           ],
           // specify the condition of filtering result
           // here is that finding the name started with `value`
-          onFilter: (value, record) => record.agent_name.indexOf(value) === 0,
-          sorter: (a, b) => b.agent_name.length - a.agent_name.length,
+          onFilter: (value, record) => record.agent_id.indexOf(value) === 0,
+          sorter: (a, b) => b.agent_id.length - a.agent_id.length,
           sortDirections: ['descend'],
         },
         {
@@ -219,7 +219,40 @@ class Part1 extends React.Component {
           // specify the condition of filtering result
           // here is that finding the name started with `value`
           onFilter: (value, record) => record.call_id.indexOf(value) === 0,
-          sorter: (a, b) => b.call_id.length - a.call_id.length,
+          sorter: (a, b) => b.call_id - a.call_id,
+          sortDirections: ['descend'],
+        },
+        {
+          title: 'Call Time',
+          dataIndex: 'call_time',
+          filters: [
+            {
+              text: 'Joe',
+              value: 'Joe',
+            },
+            {
+              text: 'Jim',
+              value: 'Jim',
+            },
+            {
+              text: 'Submenu',
+              value: 'Submenu',
+              children: [
+                {
+                  text: 'Green',
+                  value: 'Green',
+                },
+                {
+                  text: 'Black',
+                  value: 'Black',
+                },
+              ],
+            },
+          ],
+          // specify the condition of filtering result
+          // here is that finding the name started with `value`
+          onFilter: (value, record) => record.call_time.indexOf(value) === 0,
+          sorter: (a, b) => b.call_time - a.call_time,
           sortDirections: ['descend'],
         }
       ]
@@ -229,11 +262,6 @@ class Part1 extends React.Component {
   componentWillUnmount() {
     this.props.onUnload();
   }
-// <AgentList items={this.state.agents} />
-// <PageBodyList page_name="agent_list" items={this.state.agents}/>
-
-// <AgentList items={this.state.agents} parentCallback={this.agentListCallback}/>
-// <SelectedAgentsList items={this.state.selected_agents} parentCallback={this.selectedListCallback} />
 
 
   render() {
@@ -255,8 +283,11 @@ class Part1 extends React.Component {
           getFilteredCalls
         </Button>
         <br/>
-
-        <TableView columns={this.state.agent_table_columns} data={this.state.agent_table_data}/>
+        {
+          this.state.filtered_list && (
+              <TableView columns={this.state.agent_table_columns} data={this.state.filtered_list}/>
+            )
+        }
       </div>
     );
   }
