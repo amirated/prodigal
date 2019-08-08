@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import LabelList from './LabelList';
 import TableView from './TableView';
 import CallList from './CallList';
+import EditableTable from './EditableTable';
 import {
   UPDATE_FIELD_AUTH,
   PART2,
@@ -33,7 +34,7 @@ class Part2 extends React.Component {
   componentWillMount() {
     this.getCallList();
     this.getListOfLabels();
-    this.defineCallTable();
+    // this.defineCallTable();
     // this.applyLabels();
   }
 
@@ -188,8 +189,6 @@ class Part2 extends React.Component {
         ]
       }
     };
-    
-
     // data.append("myjsonkey", JSON.stringify(payload));
     fetch("https://damp-garden-93707.herokuapp.com/applyLabels", {
         'Content-Type': 'application/json',
@@ -213,12 +212,8 @@ class Part2 extends React.Component {
         }
       )
   }
-
+// <TableView columns={this.state.call_table_columns} data={this.state.call_list}/>
   render() {
-    // const email = this.props.email;
-    // const password = this.props.password;
-    // <PageBodyList page_name="part2" items={this.state.items}/>
-    // <LabelList items={this.state.label_list} />
     return (
       <div className="container page" style={{ marginTop: "5rem"}}>
         <div className="row">
@@ -229,7 +224,7 @@ class Part2 extends React.Component {
               </p>
           </div>
         </div>
-        <TableView columns={this.state.call_table_columns} data={this.state.call_list}/>
+        <EditableTable data={this.state.call_list}/>
       </div>
     );
   }

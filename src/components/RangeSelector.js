@@ -80,9 +80,9 @@ class RangeSelector extends React.Component {
 	render() {
 		return(
 			<div> Select Range: &nbsp;
-				<InputNumber min={0} max={this.state.maximumDuration - 1} defaultValue={0} onChange={this.newMinValue} />
+				<InputNumber min={0} max={this.state.maximumDuration ? this.state.maximumDuration - 1 : 10} defaultValue={0} onChange={this.newMinValue} />
 				&nbsp;
-				<InputNumber min={this.state.minimumDuration + 1} defaultValue={10} onChange={this.newMaxValue} />
+				<InputNumber min={this.state.minimumDuration ? this.state.minimumDuration + 1 : 0} defaultValue={10} onChange={this.newMaxValue} />
 			</div>
 		)
 	}
