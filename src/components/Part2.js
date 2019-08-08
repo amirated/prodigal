@@ -4,6 +4,7 @@ import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
 import LabelList from './LabelList';
+import TableView from './TableView';
 import CallList from './CallList';
 import {
   UPDATE_FIELD_AUTH,
@@ -32,6 +33,7 @@ class Part2 extends React.Component {
   componentWillMount() {
     this.getCallList();
     this.getListOfLabels();
+    this.defineCallTable();
     // this.applyLabels();
   }
 
@@ -41,6 +43,79 @@ class Part2 extends React.Component {
 
   componentWillUnmount() {
     this.props.onUnload();
+  }
+
+  defineCallTable() {
+    this.setState({
+      call_table_columns: [
+        {
+          title: 'Call ID',
+          dataIndex: 'call_id',
+          filters: [
+            {
+              text: 'Joe',
+              value: 'Joe',
+            },
+            {
+              text: 'Jim',
+              value: 'Jim',
+            },
+            {
+              text: 'Submenu',
+              value: 'Submenu',
+              children: [
+                {
+                  text: 'Green',
+                  value: 'Green',
+                },
+                {
+                  text: 'Black',
+                  value: 'Black',
+                },
+              ],
+            },
+          ],
+          // specify the condition of filtering result
+          // here is that finding the name started with `value`
+          onFilter: (value, record) => record.call_id.indexOf(value) === 0,
+          sorter: (a, b) => b.call_id - a.call_id,
+          sortDirections: ['descend'],
+        },
+        {
+          title: 'Label ID',
+          dataIndex: 'label_id',
+          filters: [
+            {
+              text: 'Joe',
+              value: 'Joe',
+            },
+            {
+              text: 'Jim',
+              value: 'Jim',
+            },
+            {
+              text: 'Submenu',
+              value: 'Submenu',
+              children: [
+                {
+                  text: 'Green',
+                  value: 'Green',
+                },
+                {
+                  text: 'Black',
+                  value: 'Black',
+                },
+              ],
+            },
+          ],
+          // specify the condition of filtering result
+          // here is that finding the name started with `value`
+          onFilter: (value, record) => record.label_id.indexOf(value) === 0,
+          sorter: (a, b) => b.label_id - a.label_id,
+          sortDirections: ['descend'],
+        }
+      ]
+    })
   }
 
   getCallList() {
@@ -143,6 +218,7 @@ class Part2 extends React.Component {
     // const email = this.props.email;
     // const password = this.props.password;
     // <PageBodyList page_name="part2" items={this.state.items}/>
+    // <LabelList items={this.state.label_list} />
     return (
       <div className="container page" style={{ marginTop: "5rem"}}>
         <div className="row">
@@ -153,7 +229,7 @@ class Part2 extends React.Component {
               </p>
           </div>
         </div>
-        <LabelList items={this.state.label_list} />
+        <TableView columns={this.state.call_table_columns} data={this.state.call_list}/>
       </div>
     );
   }

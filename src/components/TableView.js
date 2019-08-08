@@ -100,7 +100,16 @@ columns = [
         },
       ]
 */
-
+  
+  rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    getCheckboxProps: record => ({
+      disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
 
   onChange = (pagination, filters, sorter) => {
     console.log('params', pagination, filters, sorter);
@@ -108,7 +117,7 @@ columns = [
 
   render() {
     return(
-      <Table columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
+      <Table rowSelection={this.rowSelection} columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
     )
   }
 }

@@ -5,6 +5,8 @@ import agent from '../agent';
 import { connect } from 'react-redux';
 import PageBodyList from './PageBodyList';
 import AgentList from './AgentList';
+
+import RangeSelector from './RangeSelector';
 import TableView from './TableView';
 import SelectedAgentsList from './SelectedAgentsList';
 
@@ -35,12 +37,12 @@ class Part1 extends React.Component {
     this.state = {
       error: null,
       isLoaded: false,
-      agents: [],
-      min_duration: null,
-      max_duration: null,
-      filter: {},
-      filtered_list: null,
-      selected_agents: []
+      // agents: [],
+      // min_duration: null,
+      // max_duration: null,
+      // filter: {},
+      // filtered_list: null,
+      // selected_agents: []
     };
     // this.getFilteredCalls.bind(this);
   }
@@ -57,6 +59,8 @@ class Part1 extends React.Component {
 
   }
 
+
+
   agentListCallback = (childData) => {
     let temp = this.state.selected_agents;
     temp.push(childData);
@@ -69,13 +73,17 @@ class Part1 extends React.Component {
     this.setState({selected_agents: childData})
   };
 
+  rangeSelectorCallback = (childData) => {
+    this.setState({filter_time_range: childData})
+  }
+
   getFilteredCalls() {
     const filter = {"info": {
         "filter_agent_list": [
           "Janet Nelson",
           "Wayne Brown"
         ],
-        "filter_time_range": [0,10]
+        "filter_time_range": this.state.filter_time_range
         }
       }
     // data.append("myjsonkey", JSON.stringify(payload));
@@ -182,6 +190,39 @@ class Part1 extends React.Component {
           onFilter: (value, record) => record.agent_name.indexOf(value) === 0,
           sorter: (a, b) => b.agent_name.length - a.agent_name.length,
           sortDirections: ['descend'],
+        },
+        {
+          title: 'Call ID',
+          dataIndex: 'call_id',
+          filters: [
+            {
+              text: 'Joe',
+              value: 'Joe',
+            },
+            {
+              text: 'Jim',
+              value: 'Jim',
+            },
+            {
+              text: 'Submenu',
+              value: 'Submenu',
+              children: [
+                {
+                  text: 'Green',
+                  value: 'Green',
+                },
+                {
+                  text: 'Black',
+                  value: 'Black',
+                },
+              ],
+            },
+          ],
+          // specify the condition of filtering result
+          // here is that finding the name started with `value`
+          onFilter: (value, record) => record.call_id.indexOf(value) === 0,
+          sorter: (a, b) => b.call_id.length - a.call_id.length,
+          sortDirections: ['descend'],
         }
       ]
     })
@@ -208,8 +249,8 @@ class Part1 extends React.Component {
             </p>
           </div>
         </div>
-          
-        <input onChange={this.filterValue} />
+        <RangeSelector minimumDuration={this.state.min_duration} maximumDuration={this.state.max_duration} parentCallback={this.rangeSelectorCallback}/>
+        <br/>
         <Button type="primary" onClick={this.getFilteredCalls.bind(this)}>
           getFilteredCalls
         </Button>
