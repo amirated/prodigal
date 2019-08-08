@@ -117,7 +117,7 @@ class TableView extends React.Component {
 
   render() {
     return(
-      <Table rowSelection={this.rowSelection} columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
+      <Table rowKey={record => record.call_id} rowSelection={this.rowSelection} columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
     )
   }
 }

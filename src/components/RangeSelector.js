@@ -11,17 +11,6 @@ class RangeSelector extends React.Component {
 		  isLoaded: false,
 		  minimumDuration: this.props.minimumDuration,
 		  maximumDuration: this.props.maximumDuration
-		 //  marks: {
-			// 	0: this.props.minimumDuration,
-			// 	2: '2',
-			// 	7: '7',
-			// 	100: {
-			// 		style: {
-			// 		  color: '#f50',
-			// 		},
-			// 		label: <strong>{this.props.maximumDuration}</strong>,
-			// 	}
-			// }
 		}
 	}	
 
@@ -30,36 +19,6 @@ class RangeSelector extends React.Component {
 		// this.getFilteredCalls();
 		// dispatch({ type: AGENT_LIST_FETCHED })
 	}
-
-/*
-	setMarks() {
-		this.setState({
-			marks: {
-				0: this.props.minimumDuration,
-				2: '2',
-				7: '7',
-				100: {
-					style: {
-					  color: '#f50',
-					},
-					label: <strong>{this.props.maximumDuration}</strong>,
-				}
-			}
-		});
-	}
-*/
-
-/*	
-	sliderValue = (range) => {
-		console.log(range);
-		if (range) {
-			this.props.parentCallback(range)
-		} else {
-			this.props.parentCallback([0,10])
-		}
-			
-	}
-*/
 
 	newMinValue = (value) => {
 		console.log("new min: " + value);

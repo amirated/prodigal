@@ -5,7 +5,7 @@ import agent from '../agent';
 import { connect } from 'react-redux';
 import LabelList from './LabelList';
 import TableView from './TableView';
-import CallList from './CallList';
+// import CallList from './CallList';
 import EditableTable from './EditableTable';
 import {
   UPDATE_FIELD_AUTH,
