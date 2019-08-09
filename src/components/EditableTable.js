@@ -2,22 +2,34 @@ import React from 'react';
 import { connect } from 'react-redux';
 // import { EditableTable } from 'antd';
 import { Table, Input, InputNumber, Popconfirm, Form } from 'antd';
+import { Select } from 'antd';
+const { Option } = Select;
 
-// const data = [];
-// for (let i = 0; i < 100; i++) {
-//   data.push({
-//     key: i.toString(),
-//     name: `Edrward ${i}`,
-//     age: 32,
-//     address: `London Park no. ${i}`,
-//   });
-// }
+
 const EditableContext = React.createContext();
 
 class EditableCell extends React.Component {
+
+  handleChange(value) {
+
+    console.log(`selected ${value}`);
+  }
+
   getInput = () => {
     if (this.props.inputType === 'number') {
       return <InputNumber />;
+    } else if (this.props.inputType === 'label') {
+      let label_list = this.props.label_list;
+      return (<Select mode="tags" 
+                      style={{ width: '100%' }} 
+                      placeholder="Labels"
+                      onChange={this.handleChange}>
+                {(label_list &&
+                  label_list.map(label => {
+                    return <Option key={label}>{label}</Option>
+                  })
+                )}    
+              </Select>)
     }
     return <Input />;
   };
@@ -31,12 +43,14 @@ class EditableCell extends React.Component {
       record,
       index,
       children,
+      label_list,
       ...restProps
     } = this.props;
+    console.log(...restProps);
     return (
       <td {...restProps}>
         {editing ? (
-          <Form.Item style={{ margin: 0 }}>
+          <Form.Item style={{ margin: 0 }} label_list={label_list}>
             {getFieldDecorator(dataIndex, {
               rules: [
                 {
@@ -45,6 +59,7 @@ class EditableCell extends React.Component {
                 },
               ],
               initialValue: record[dataIndex],
+              label_list: label_list
             })(this.getInput())}
           </Form.Item>
         ) : (
@@ -62,21 +77,24 @@ class EditableCell extends React.Component {
 class EditableTable extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      editingKey: '' 
+    this.state = {
+      data: [],
+      editingKey: '',
+      label_list: this.props.label_list
     };
     this.columns = [
       {
         title: 'Call ID',
         dataIndex: 'call_id',
         width: '25%',
-        editable: true,
+        editable: false,
       },
       {
         title: 'Label ID',
         dataIndex: 'label_id',
         width: '50%',
         editable: true,
+        label_list: this.state.label_list
       },
       {
         title: 'operation',
@@ -90,19 +108,19 @@ class EditableTable extends React.Component {
                 {form => (
                   <a
                     href="javascript:;"
-                    onClick={() => this.save(form, record.key)}
+                    onClick={() => this.save(form, record.call_id)}
                     style={{ marginRight: 8 }}
                   >
                     Save
                   </a>
                 )}
               </EditableContext.Consumer>
-              <Popconfirm title="Sure to cancel?" onConfirm={() => this.cancel(record.key)}>
+              <Popconfirm title="Sure to cancel?" onConfirm={() => this.cancel(record.call_id)}>
                 <a>Cancel</a>
               </Popconfirm>
             </span>
           ) : (
-            <a disabled={editingKey !== ''} onClick={() => this.edit(record.key)}>
+            <a disabled={editingKey !== ''} onClick={() => this.edit(record.call_id)}>
               Edit
             </a>
           );
@@ -111,19 +129,25 @@ class EditableTable extends React.Component {
     ];
   }
 
-  isEditing = record => record.key === this.state.editingKey;
+  componentWillReceiveProps(someProp) {
+    this.setState({label_list: someProp.label_list})
+    this.columns[1].label_list = someProp.label_list;
+  }
+
+  isEditing = record => record.call_id === this.state.editingKey;
+  labelList = [];
 
   cancel = () => {
     this.setState({ editingKey: '' });
   };
 
-  save(form, key) {
+  save(form, call_id) {
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
       const newData = [...this.state.data];
-      const index = newData.findIndex(item => key === item.key);
+      const index = newData.findIndex(item => call_id === item.call_id);
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
@@ -138,8 +162,8 @@ class EditableTable extends React.Component {
     });
   }
 
-  edit(key) {
-    this.setState({ editingKey: key });
+  edit(call_id) {
+    this.setState({ editingKey: call_id });
   }
 
   render() {
@@ -157,20 +181,22 @@ class EditableTable extends React.Component {
         ...col,
         onCell: record => ({
           record,
-          inputType: col.dataIndex === 'age' ? 'number' : 'text',
+          inputType: col.dataIndex === 'label_id' ? 'label' : 'text',
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
+          label_list: col.label_list
         }),
       };
     });
 
     return (
-      <EditableContext.Provider value={this.props.form}>
+      <EditableContext.Provider value={this.props.form} label_list={this.props.label_list}>
         <Table
+          rowKey={record => record.call_id}
           components={components}
           bordered
-          dataSource={this.props.data}
+          dataSource={this.props.call_list}
           columns={columns}
           rowClassName="editable-row"
           pagination={{

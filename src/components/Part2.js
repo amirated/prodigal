@@ -26,14 +26,15 @@ class Part2 extends React.Component {
     this.state = {
       error: null,
       isLoaded: false,
-      label_list: [],
-      call_list: []
+      call_list: [],
+      label_list: []
     };
   }
 
   componentWillMount() {
-    this.getCallList();
     this.getListOfLabels();
+    this.getCallList();
+    
     // this.defineCallTable();
     // this.applyLabels();
   }
@@ -136,7 +137,6 @@ class Part2 extends React.Component {
             isLoaded: true,
             call_list: result.data.call_data
           });
-          console.log(result);
         },
         (error) => {
           this.setState({
@@ -163,7 +163,7 @@ class Part2 extends React.Component {
             isLoaded: true,
             label_list: result.data.unique_label_list
           });
-          console.log(result);
+          console.log(this.state.label_list);
         },
         (error) => {
           this.setState({
@@ -224,7 +224,7 @@ class Part2 extends React.Component {
               </p>
           </div>
         </div>
-        <EditableTable data={this.state.call_list}/>
+        <EditableTable call_list={this.state.call_list} label_list={this.state.label_list} />
       </div>
     );
   }
