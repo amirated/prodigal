@@ -114,10 +114,10 @@ class TableView extends React.Component {
   onChange = (pagination, filters, sorter) => {
     console.log('params', pagination, filters, sorter);
   };
-
+// <Table rowKey={record => record.call_id} rowSelection={this.rowSelection} columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
   render() {
     return(
-      <Table rowKey={record => record.call_id} rowSelection={this.rowSelection} columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
+      <Table rowKey={record => record.call_id} columns={this.props.columns} dataSource={this.props.data} onChange={this.onChange} />
     )
   }
 }

@@ -147,15 +147,11 @@ class EditableTable extends React.Component {
   };
 
   save(form, call_id) {
-    // console.log(form);
-    console.log(call_id);
     form.validateFields((error, row) => {
-      console.log(row);
       if (error) {
         return;
       }
       const newData = [...this.state.label_list];
-      console.log(newData);
       this.props.parentCallback(call_id, row.label_id);
       // const index = newData.findIndex(item => call_id === item.call_id);
       // if (index > -1) {

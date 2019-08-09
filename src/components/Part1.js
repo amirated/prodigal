@@ -39,11 +39,6 @@ class Part1 extends React.Component {
       isLoaded: false,
       selected_agents: [],
       filter_time_range: [0,10]
-      // agents: [],
-      // min_duration: null,
-      // max_duration: null,
-      // filter: {},
-      // filtered_list: null,
       
     };
     // this.getFilteredCalls.bind(this);
@@ -159,32 +154,7 @@ class Part1 extends React.Component {
         {
           title: 'Name',
           dataIndex: 'agent_id',
-          filters: [
-            {
-              text: 'Joe',
-              value: 'Joe',
-            },
-            {
-              text: 'Jim',
-              value: 'Jim',
-            },
-            {
-              text: 'Submenu',
-              value: 'Submenu',
-              children: [
-                {
-                  text: 'Green',
-                  value: 'Green',
-                },
-                {
-                  text: 'Black',
-                  value: 'Black',
-                },
-              ],
-            },
-          ],
-          // specify the condition of filtering result
-          // here is that finding the name started with `value`
+          filters: [],
           onFilter: (value, record) => record.agent_id.indexOf(value) === 0,
           sorter: (a, b) => b.agent_id.length - a.agent_id.length,
           sortDirections: ['descend'],
@@ -192,30 +162,7 @@ class Part1 extends React.Component {
         {
           title: 'Call ID',
           dataIndex: 'call_id',
-          filters: [
-            {
-              text: 'Joe',
-              value: 'Joe',
-            },
-            {
-              text: 'Jim',
-              value: 'Jim',
-            },
-            {
-              text: 'Submenu',
-              value: 'Submenu',
-              children: [
-                {
-                  text: 'Green',
-                  value: 'Green',
-                },
-                {
-                  text: 'Black',
-                  value: 'Black',
-                },
-              ],
-            },
-          ],
+          filters: [],
           // specify the condition of filtering result
           // here is that finding the name started with `value`
           onFilter: (value, record) => record.call_id.indexOf(value) === 0,
@@ -225,30 +172,7 @@ class Part1 extends React.Component {
         {
           title: 'Call Time',
           dataIndex: 'call_time',
-          filters: [
-            {
-              text: 'Joe',
-              value: 'Joe',
-            },
-            {
-              text: 'Jim',
-              value: 'Jim',
-            },
-            {
-              text: 'Submenu',
-              value: 'Submenu',
-              children: [
-                {
-                  text: 'Green',
-                  value: 'Green',
-                },
-                {
-                  text: 'Black',
-                  value: 'Black',
-                },
-              ],
-            },
-          ],
+          filters: [],
           // specify the condition of filtering result
           // here is that finding the name started with `value`
           onFilter: (value, record) => record.call_time.indexOf(value) === 0,
