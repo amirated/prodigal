@@ -9,13 +9,18 @@ const { Option } = Select;
 const EditableContext = React.createContext();
 
 class EditableCell extends React.Component {
-
-  handleChange(value) {
-
-    console.log(`selected ${value}`);
+  
+  // callId = () => { return this.props.record.call_id }
+  
+  handleChange(call_id, e) {
+    console.log(e);
+    // console.log(index);
+    // console.log(abc);
+    console.log(call_id);
+    // console.log(`selected ${value}`);
   }
 
-  getInput = () => {
+  getInput = (call_id) => {
     if (this.props.inputType === 'number') {
       return <InputNumber />;
     } else if (this.props.inputType === 'label') {
@@ -23,7 +28,7 @@ class EditableCell extends React.Component {
       return (<Select mode="tags" 
                       style={{ width: '100%' }} 
                       placeholder="Labels"
-                      onChange={this.handleChange}>
+                      onChange={(e) => this.handleChange(call_id, e)}>
                 {(label_list &&
                   label_list.map(label => {
                     return <Option key={label}>{label}</Option>
@@ -46,7 +51,7 @@ class EditableCell extends React.Component {
       label_list,
       ...restProps
     } = this.props;
-    console.log(...restProps);
+
     return (
       <td {...restProps}>
         {editing ? (
@@ -60,7 +65,7 @@ class EditableCell extends React.Component {
               ],
               initialValue: record[dataIndex],
               label_list: label_list
-            })(this.getInput())}
+            })(this.getInput(record.call_id))}
           </Form.Item>
         ) : (
           children
@@ -142,23 +147,28 @@ class EditableTable extends React.Component {
   };
 
   save(form, call_id) {
+    // console.log(form);
+    console.log(call_id);
     form.validateFields((error, row) => {
+      console.log(row);
       if (error) {
         return;
       }
-      const newData = [...this.state.data];
-      const index = newData.findIndex(item => call_id === item.call_id);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        this.setState({ data: newData, editingKey: '' });
-      } else {
-        newData.push(row);
-        this.setState({ data: newData, editingKey: '' });
-      }
+      const newData = [...this.state.label_list];
+      console.log(newData);
+      this.props.parentCallback(call_id, row.label_id);
+      // const index = newData.findIndex(item => call_id === item.call_id);
+      // if (index > -1) {
+      //   const item = newData[index];
+      //   newData.splice(index, 1, {
+      //     ...item,
+      //     ...row,
+      //   });
+      //   this.setState({ data: newData, editingKey: '' });
+      // } else {
+      //   newData.push(row);
+      //   this.setState({ data: newData, editingKey: '' });
+      // }
     });
   }
 
@@ -191,7 +201,7 @@ class EditableTable extends React.Component {
     });
 
     return (
-      <EditableContext.Provider value={this.props.form} label_list={this.props.label_list}>
+      <EditableContext.Provider value={this.props.form}>
         <Table
           rowKey={record => record.call_id}
           components={components}

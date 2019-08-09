@@ -47,6 +47,43 @@ class Part2 extends React.Component {
     this.props.onUnload();
   }
 
+  labelChangeCallback = (call_id, labels) => {
+    console.log(call_id);
+    console.log(labels);
+    var callList = [call_id];
+    var label_ops = []
+    
+    if (labels) {
+      let old_labels = this.state.call_list[call_id].label_id;
+      let new_labels = labels.filter(elem => {
+        return old_labels.indexOf(elem) == -1;
+      });
+      let removed_labels = old_labels.filter(elem => {
+        return labels.indexOf(elem) == -1;
+      });
+      new_labels = new_labels.map(elem => {
+        return { "name": elem, "op": "add"}
+      });
+      removed_labels = removed_labels.map(elem => {
+        return { "name": elem, "op": "remove" }
+      })
+      let combined_op = new_labels.concat(removed_labels);
+      console.log()
+      let call_obj = {
+        "operation": {
+          "callList": callList,
+          "label_ops": combined_op
+        }
+      };
+
+      // let call_obj = {
+      //   callList: callList,
+      //   label_ops: new_labels.concat(removed_labels)
+      // }
+      this.applyLabels(call_obj);
+    }
+  };
+
   defineCallTable() {
     this.setState({
       call_table_columns: [
@@ -174,27 +211,20 @@ class Part2 extends React.Component {
       )
   }
 
-  applyLabels() {
-    const data = {
-      "operation": {
-        "callList": [0,1,2],
-        "label_ops": [
-          {
-            "name": "random",
-            "op": "add"
-          }, {
-            "name": "unread",
-            "op": "add"
-          }
-        ]
-      }
-    };
-    // data.append("myjsonkey", JSON.stringify(payload));
+  applyLabels(call_obj) {
+    var headers = {
+      'user_id': '24b456'
+    }
+    
+    console.log(JSON.stringify(call_obj));
+    // call_obj.append("myjsonkey", JSON.stringify(call_obj));
+    console.log(call_obj);
     fetch("https://damp-garden-93707.herokuapp.com/applyLabels", {
         'Content-Type': 'application/json',
-        'user_id': '24b456',
-        method: 'POST',
-        data: JSON.stringify(data)
+        'headers': headers,
+        'method': 'POST',
+        // 'data': JSON.stringify(call_obj)
+        body: JSON.stringify(call_obj)
       })
       .then(res => res.json())
       .then(
@@ -203,6 +233,7 @@ class Part2 extends React.Component {
             isLoaded: true,
             filtered_list: result.data
           });
+          console.log(result)
         },
         (error) => {
           this.setState({
@@ -224,7 +255,7 @@ class Part2 extends React.Component {
               </p>
           </div>
         </div>
-        <EditableTable call_list={this.state.call_list} label_list={this.state.label_list} />
+        <EditableTable call_list={this.state.call_list} label_list={this.state.label_list} parentCallback={this.labelChangeCallback} />
       </div>
     );
   }
